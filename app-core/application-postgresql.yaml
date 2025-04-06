@@ -9,12 +9,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Andrej220/HAM-core-services
-    targetRevision: HEAD
-    path: apps/postgresql
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: postgresql
+    targetRevision: 15.5.8
     helm:
       valueFiles:
-        - values.yaml
+        - https://raw.githubusercontent.com/Andrej220/HAM-core-services/HEAD/apps/postgresql/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: database-test
