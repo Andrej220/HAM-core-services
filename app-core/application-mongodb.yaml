@@ -9,13 +9,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Andrej220/HAM-core-services
-    targetRevision: HEAD
-    path: apps/mongodb
+    repoURL: https://charts.bitnami.com/bitnami
     chart: mongodb
+    targetRevision: 16.4.12
     helm:
       valueFiles:
-        - values.yaml
+        - https://raw.githubusercontent.com/Andrej220/HAM-core-services/HEAD/apps/mongodb/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: database-test
