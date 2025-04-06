@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.bitnami.com/bitnami
-    chart: mongodb
+    chart: bitnami/mongodb
     targetRevision: 16.4.12
     helm:
       valueFiles:
