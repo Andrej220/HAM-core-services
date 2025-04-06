@@ -1,7 +1,0 @@
-auth:
-  postgresPassword: password
-
-primary:
-  persistence:
-    storageClass: raid10-storage
-    size: 10Gi
