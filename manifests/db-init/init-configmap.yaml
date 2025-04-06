@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init-scripts
+  namespace: database-test
+data:
+  init.sql: |
+    -- SQL example
+    CREATE TABLE customers (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      location TEXT
+    );
+
+    CREATE TABLE systems (
+      id SERIAL PRIMARY KEY,
+      customer_id INTEGER REFERENCES customers(id),
+      hostname TEXT,
+      ip_address TEXT,
+      port INTEGER,
+      login TEXT
+    );
+
+  init.py: |
+    from pymongo import MongoClient
+    from datetime import datetime
+
+    mongo = MongoClient("mongodb://mongodb:27017/")
+    db = mongo["ham"]
+    collection = db["host_results"]
+
+    collection.insert_one({
+        "system_id": 1,
+        "executed_at": datetime.utcnow(),
+        "result": {
+            "id": "root",
+            "fields": []
+        }
+    })

@@ -1,0 +1,9 @@
+auth:
+  rootPassword: password
+  username: appuser
+  password: apppassword
+  database: appdb
+
+persistence:
+  storageClass: raid10-storage
+  size: 10Gi

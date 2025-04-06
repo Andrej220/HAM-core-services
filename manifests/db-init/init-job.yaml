@@ -1,0 +1,31 @@
+---
+# Database Init Job (db-init/init-job.yaml)
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-databases
+  namespace: database-test
+spec:
+  template:
+    spec:
+      containers:
+      - name: init
+        image: python:3.10
+        command: ["sh", "-c"]
+        args:
+          - apt update &&
+            apt install -y postgresql-client &&
+            pip install psycopg2-binary pymongo &&
+            psql -h postgres-postgresql -U postgres -f /scripts/init.sql &&
+            python3 /scripts/init.py
+        env:
+        - name: PGPASSWORD
+          value: "password"
+        volumeMounts:
+        - name: script-volume
+          mountPath: /scripts
+      restartPolicy: OnFailure
+      volumes:
+      - name: script-volume
+        configMap:
+          name: init-scripts
