@@ -1,0 +1,4 @@
+resources:
+  - database-test-namespace.yaml
+  - raid10-storage.yaml
+  - pv-raid10-monog.yaml
