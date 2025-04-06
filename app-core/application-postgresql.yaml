@@ -22,3 +22,8 @@ spec:
     automated:
       selfHeal: true
       prune: true
+    syncOptions:
+      - CreateNamespace=true
+  dependsOn:
+    - name: ham-core
+      namespace: argocd
