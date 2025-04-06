@@ -3,5 +3,5 @@ auth:
 
 primary:
   persistence:
-    storageClass: raid10-storage
+    storageClass: local-path
     size: 10Gi
