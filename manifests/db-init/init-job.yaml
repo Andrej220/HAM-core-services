@@ -19,7 +19,7 @@ spec:
           - |
             apt update && apt install -y postgresql-client && \
             pip install psycopg2-binary pymongo && \
-            psql -h postgres-postgresql -U postgres -d postgres -f /scripts/init.sql && \
+            psql -h postgresql -U postgres -d postgres -f /scripts/init.sql && \
             python3 /scripts/init.py
         env:
         - name: PGPASSWORD
