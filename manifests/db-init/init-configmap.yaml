@@ -25,8 +25,8 @@ data:
     from pymongo import MongoClient
     from datetime import datetime
 
-    mongo = MongoClient("mongodb://mongodb:27017/")
-    db = mongo["ham"]
+    mongo = MongoClient("mongodb://appuser:apppassword@mongodb.database-test.svc.cluster.local:27017/appdb")
+    db = mongo["appdb"]
     collection = db["host_results"]
 
     collection.insert_one({
