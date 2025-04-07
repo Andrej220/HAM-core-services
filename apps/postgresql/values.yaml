@@ -5,3 +5,4 @@ primary:
   persistence:
     storageClass: local-path
     size: 10Gi
+  podManagementPolicy: OrderedReady
