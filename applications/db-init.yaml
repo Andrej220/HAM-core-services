@@ -19,6 +19,3 @@ spec:
     automated:
       selfHeal: true
       prune: true
-  dependsOn:
-    - name: postgresql
-    - name: mongodb
