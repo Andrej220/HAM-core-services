@@ -1,3 +1,8 @@
+auth:
+  rootPassword: password
+  username: appuser
+  password: apppassword
+  database: appdb
 persistence:
-  storageClass: local-path
+  storageClass: raid10-storage
   size: 10Gi
