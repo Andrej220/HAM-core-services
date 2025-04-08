@@ -1,3 +1,0 @@
-resources:
-  #- database-test-namespace.yaml
-  - raid10-storage.yaml

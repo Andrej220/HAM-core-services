@@ -2,19 +2,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgresql
+  name: mongodb
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: postgresql
-    targetRevision: 15.5.8
+    repoURL: registry-1.docker.io/bitnamicharts
+    chart: mongodb
+    targetRevision: 16.4.12
     helm:
       valueFiles:
-        - https://raw.githubusercontent.com/Andrej220/HAM-core-services/HEAD/apps/postgresql/values.yaml
+        - ../mongodb-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: database-test
@@ -25,5 +25,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
   dependsOn:
-    - name: ham-core
-      namespace: argocd
+      name: storage

@@ -1,6 +1,3 @@
-auth:
-  postgresPassword: password
-
 primary:
   persistence:
     storageClass: local-path

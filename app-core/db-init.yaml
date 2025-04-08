@@ -1,20 +1,24 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: storage
+  name: db-init
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
     repoURL: https://github.com/Andrej220/HAM-core-services
     targetRevision: HEAD
-    path: manifests/storage
+    path: manifests/db-init
   destination:
     server: https://kubernetes.default.svc
-    namespace: database-test  
+    namespace: database-test
   syncPolicy:
     automated:
       selfHeal: true
       prune: true
+  dependsOn:
+    - name: postgresql
+    - name: mongodb

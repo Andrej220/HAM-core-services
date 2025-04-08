@@ -5,13 +5,11 @@ metadata:
   namespace: database-test
 data:
   init.sql: |
-    -- SQL example
     CREATE TABLE customers (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
       location TEXT
     );
-
     CREATE TABLE systems (
       id SERIAL PRIMARY KEY,
       customer_id INTEGER REFERENCES customers(id),
@@ -20,15 +18,14 @@ data:
       port INTEGER,
       login TEXT
     );
-
   init.py: |
     from pymongo import MongoClient
     from datetime import datetime
+    import os
 
-    mongo = MongoClient("mongodb://appuser:apppassword@mongodb.database-test.svc.cluster.local:27017/appdb")
-    db = mongo["appdb"]
+    mongo = MongoClient(f"mongodb://{os.environ['MONGO_USER']}:{os.environ['MONGO_PASS']}@mongodb:27017/{os.environ['MONGO_DB']}")
+    db = mongo[os.environ['MONGO_DB']]
     collection = db["host_results"]
-
     collection.insert_one({
         "system_id": 1,
         "executed_at": datetime.utcnow(),

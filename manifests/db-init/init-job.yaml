@@ -4,12 +4,12 @@ metadata:
   name: init-databases
   namespace: database-test
 spec:
-  backoffLimit: 6  
-  completions: 1   
-  parallelism: 1   
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
   template:
     spec:
-      restartPolicy: Never  
+      restartPolicy: Never
       containers:
       - name: init
         image: python:3.10
@@ -23,11 +23,29 @@ spec:
             python3 /scripts/init.py
         env:
         - name: PGPASSWORD
-          value: "password"  
+          valueFrom:
+            secretKeyRef:
+              name: postgresql
+              key: postgres-password
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: mongodb
+              key: mongodb-username
+        - name: MONGO_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mongodb
+              key: mongodb-password
+        - name: MONGO_DB
+          valueFrom:
+            secretKeyRef:
+              name: mongodb
+              key: mongodb-database
         volumeMounts:
         - name: script-volume
           mountPath: /scripts
       volumes:
       - name: script-volume
         configMap:
-          name: init-scripts  
+          name: init-scripts
