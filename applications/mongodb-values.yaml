@@ -1,8 +1,15 @@
+architecture: "replicaset"
 auth:
   rootPassword: password
   username: appuser
   password: apppassword
   database: appdb
+
+passwordUpdateJob:
+  enabled: true
+  previousPasswords:
+    existingSecret: previous-password-secret
+    
 persistence:
   storageClass: raid10-storage
   size: 10Gi
