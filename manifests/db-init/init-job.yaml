@@ -30,17 +30,17 @@ spec:
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: mongodb-secret
               key: mongodb-username
         - name: MONGO_PASS
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: mongodb-secret
               key: mongodb-password
         - name: MONGO_DB
           valueFrom:
             secretKeyRef:
-              name: mongodb
+              name: mongodb-secret
               key: mongodb-database
         volumeMounts:
         - name: script-volume
