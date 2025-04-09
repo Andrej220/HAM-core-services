@@ -1,23 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: init-scripts
+  name: init-python-scripts
   namespace: database-test
 data:
-  init.sql: |
-    CREATE TABLE customers (
-      id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      location TEXT
-    );
-    CREATE TABLE systems (
-      id SERIAL PRIMARY KEY,
-      customer_id INTEGER REFERENCES customers(id),
-      hostname TEXT,
-      ip_address TEXT,
-      port INTEGER,
-      login TEXT
-    );
   init.py: |
     from pymongo import MongoClient
     from datetime import datetime
