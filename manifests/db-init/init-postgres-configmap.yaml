@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: init-sql-scripts
+  name: init-postgres-scripts
   namespace: database-test
 data:
   init.sql: |

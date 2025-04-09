@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: init-python-scripts
+  name: init-mongodb-scripts
   namespace: database-test
 data:
   init.py: |

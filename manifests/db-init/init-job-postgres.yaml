@@ -19,8 +19,7 @@ spec:
           - |
             apt update && apt install -y postgresql-client && \
             pip install psycopg2-binary pymongo && \
-            psql -h postgresql -U postgres -d postgres -f /scripts/init.sql && \
-            python3 /scripts/init.py
+            psql -h postgresql -U postgres -d postgres -f /scripts/init.sql 
         env:
         - name: PGPASSWORD
           valueFrom:
@@ -33,4 +32,4 @@ spec:
       volumes:
       - name: script-volume
         configMap:
-          name: init-scripts
+          name: init-postgres-scripts
