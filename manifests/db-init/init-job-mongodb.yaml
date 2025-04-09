@@ -45,4 +45,4 @@ spec:
       volumes:
       - name: script-volume
         configMap:
-          name: init-monogodb-scripts
+          name: init-mongodb-scripts
