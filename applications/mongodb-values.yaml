@@ -15,3 +15,6 @@ passwordUpdateJob:
 persistence:
   storageClass: raid10-storage
   size: 10Gi
+
+annotations:
+  argocd.argoproj.io/sync-wave: "2"  
