@@ -22,11 +22,11 @@ spec:
             psql -h postgresql -U postgres -d postgres -f /scripts/init.sql && \
             python3 /scripts/init.py
         env:
-        #- name: PGPASSWORD
-        #  valueFrom:
-        #    secretKeyRef:
-        #      name: postgresql
-        #      key: postgres-password
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql
+              key: postgres-password
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
