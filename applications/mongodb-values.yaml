@@ -3,9 +3,9 @@ replicaCount: 2
 auth:
   rootUser: "root"
   rootPassword: "password"
-  username: ["appuser"]
-  password: ["apppassword"]
-  database: ["appdb"]
+  username: "appuser"
+  password: "apppassword"
+  database: "appdb"
 
 passwordUpdateJob:
   enabled: true
