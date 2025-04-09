@@ -3,17 +3,15 @@ replicaCount: 2
 auth:
   rootUser: "root"
   rootPassword: "password"
-  username: "appuser"
-  password: "apppassword"
-  database: "appdb"
+  username: ["appuser"]
+  password: ["apppassword"]
+  database: ["appdb"]
 
 passwordUpdateJob:
   enabled: true
   previousPasswords:
-    existingSecret: "mongodb"
-  podAnnotations:
-    "argocd.argoproj.io/hook": PostSync  
-    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+    existingSecret: previous-password-secret
+
 persistence:
   storageClass: raid10-storage
   size: 10Gi
