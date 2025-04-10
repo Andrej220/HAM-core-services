@@ -11,6 +11,9 @@ passwordUpdateJob:
   enabled: true
   previousPasswords:
     existingSecret: mongodb
+  podAnnotations:
+    "argocd.argoproj.io/hook": "PostSync"  
+    "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"  
 
 persistence:
   storageClass: raid10-storage
