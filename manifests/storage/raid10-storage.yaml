@@ -12,7 +12,7 @@ metadata:
   name: pv-raid10
 spec:
   capacity:
-    storage: 10Gi
+    storage: 100Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
