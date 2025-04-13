@@ -1,8 +1,14 @@
+persistence:
+    storageClass: ""
+    existingClaim: postgres-data  
+    enabled: true 
 primary:
   persistence:
-    storageClass: local-path
-    size: 10Gi
-  podManagementPolicy: OrderedReady
+    existingClaim: postgres-data  
+    
+podManagementPolicy: OrderedReady
 persistentVolumeClaimRetentionPolicy:  
   whenDeleted: Retain
   whenScaled: Retain
+nodeSelector:
+    kubernetes.io/hostname: ds-node1 

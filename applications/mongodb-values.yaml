@@ -1,5 +1,5 @@
-architecture: "replicaset"
-replicaCount: 2
+# architecture: "replicaset"
+# replicaCount: 2
 auth:
   rootUser: "root"
   rootPassword: "password"
@@ -8,13 +8,22 @@ auth:
   databases: ["appdb"]
 
 passwordUpdateJob:
-  enabled: true
-  previousPasswords:
-    existingSecret: mongodb
-  podAnnotations:
-    "argocd.argoproj.io/hook": "PostSync"  
-    "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"  
+  enabled: false
+  existingSecret: mongodb
+  existingSecretKey: mongodb-password
+previousPasswords:
+  existingSecret: mongodb
+podAnnotations:
+  "argocd.argoproj.io/hook": "PostSync"  
+  "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
 
+fullnameOverride: "mongodb"
+nameOverride: "mongodb"
+podLabels:
+  app: mongodb
 persistence:
-  storageClass: raid10-storage
-  size: 10Gi
+  enabled: true
+  existingClaim: mongodb-data
+  storageClass: raid10-storage   
+nodeSelector:
+    kubernetes.io/hostname: ds-node1 

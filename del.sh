@@ -3,3 +3,5 @@ kubectl delete -f applications/postgresql.yaml -n argocd
 kubectl delete -f applications/mongodb.yaml -n argocd
 kubectl delete -f applications/db-init.yaml -n argocd
 kubectl delete secret --all -n database-test
+kubectl delete all --all  -n database-test
+kubectl get all  -n database-test
