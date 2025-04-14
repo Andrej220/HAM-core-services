@@ -20,11 +20,11 @@ spec:
             pip install pymongo && \
             python3 /scripts/init.py
         env:
-        - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgresql
-              key: postgres-password
+        #- name: PGPASSWORD
+        #  valueFrom:
+        #    secretKeyRef:
+        #      name: postgresql
+        #      key: postgres-password
         - name: MONGO_USER
           valueFrom:
             secretKeyRef:
