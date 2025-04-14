@@ -8,14 +8,13 @@ auth:
   databases: ["appdb"]
 
 passwordUpdateJob:
+  backoffLimit: 5
   enabled: false
   existingSecret: mongodb
   existingSecretKey: mongodb-password
-previousPasswords:
-  existingSecret: mongodb
-podAnnotations:
-  "argocd.argoproj.io/hook": "PostSync"  
-  "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
+  annotations:
+    "argocd.argoproj.io/hook": "PostSync"  
+    "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
 
 fullnameOverride: "mongodb"
 nameOverride: "mongodb"
@@ -24,6 +23,8 @@ podLabels:
 persistence:
   enabled: true
   existingClaim: mongodb-data
-  storageClass: raid10-storage   
+  storageClass: ""   
+  annotations:
+    "helm.sh/resource-policy": keep
 nodeSelector:
     kubernetes.io/hostname: ds-node1 
