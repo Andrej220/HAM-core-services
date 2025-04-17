@@ -5,18 +5,23 @@ metadata:
   namespace: database-test
 data:
   init.py: |
-    from pymongo import MongoClient
-    from datetime import datetime
-    import os
 
-    mongo = MongoClient(f"mongodb://{os.environ['MONGO_USER']}:{os.environ['MONGO_PASS']}@mongodb:27017/{os.environ['MONGO_DB']}")
-    db = mongo["os.environ['MONGO_DB']"]
-    collection = db["host_results"]
+    import os, json
+    from pymongo import MongoClient
+
+    users = json.loads(os.getenv("MONGO_USER_JSON", "[]"))
+    pwds  = json.loads(os.getenv("MONGO_PASS_JSON", "[]"))
+    dbs   = json.loads(os.getenv("MONGO_DB_JSON",   "[]"))
+
+    user = users[0] if users else "root"
+    pwd  = pwds[0]  if pwds  else ""
+    db   = dbs[0]   if dbs   else "admin"
+
+    # Connect and insert
+    mongo = MongoClient(f"mongodb://{user}:{pwd}@mongodb:27017/{db}")
+    collection = mongo[db]["host_results"]
     collection.insert_one({
         "system_id": 1,
         "executed_at": datetime.utcnow(),
-        "result": {
-            "id": "root",
-            "fields": []
-        }
+        "result": { "id": user, "fields": [] }
     })
