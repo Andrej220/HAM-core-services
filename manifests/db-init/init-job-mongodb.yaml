@@ -24,17 +24,17 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mongodb
-              key: mongodb-username
+              key: mongodb-usernames
         - name: MONGO_PASS
           valueFrom:
             secretKeyRef:
               name: mongodb
-              key: mongodb-password
+              key: mongodb-passwords
         - name: MONGO_DB
           valueFrom:
             secretKeyRef:
               name: mongodb
-              key: mongodb-database
+              key: mongodb-databases
         volumeMounts:
         - name: script-volume
           mountPath: /scripts
