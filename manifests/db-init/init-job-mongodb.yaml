@@ -24,7 +24,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mongodb
-              key: mongodb-password
+              key: mongodb-passwords
         volumeMounts:
         - name: script-volume
           mountPath: /scripts
