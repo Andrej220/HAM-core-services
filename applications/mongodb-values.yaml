@@ -1,30 +1,13 @@
-# architecture: "replicaset"
-# replicaCount: 2
 auth:
-  rootUser: "root"
-  rootPassword: "password"
-  usernames: ["appuser"]
-  passwords: ["apppassword"]
-  databases: ["appdb"]
-
-passwordUpdateJob:
-  backoffLimit: 5
-  enabled: false
-  existingSecret: mongodb
-  existingSecretKey: mongodb-password
-  annotations:
-    "argocd.argoproj.io/hook": "PostSync"  
-    "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
-
-fullnameOverride: "mongodb"
-nameOverride: "mongodb"
-podLabels:
-  app: mongodb
+  enabled: true
+  rootPassword: rootpassword
+  username: appuser
+  password: apppassword
+  database: appdb
+fullnameOverride: mongodb
+nameOverride: mongodb
 persistence:
   enabled: true
   existingClaim: mongodb-data
-  storageClass: ""   
-  annotations:
-    "helm.sh/resource-policy": keep
 nodeSelector:
-    kubernetes.io/hostname: ds-node1 
+  kubernetes.io/hostname: ds-node1
