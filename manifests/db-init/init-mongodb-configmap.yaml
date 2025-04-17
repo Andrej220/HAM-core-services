@@ -9,8 +9,8 @@ data:
     from datetime import datetime
     import os
 
-    mongo = MongoClient(f"mongodb://{os.environ['appuser']}:{os.environ['MONGO_PASS']}@mongodb:27017/{os.environ['appdb']}")
-    db = mongo[os.environ['appdb']]
+    mongo = MongoClient(f"mongodb://appuser:{os.environ['MONGO_PASS']}@mongodb:27017/appdb")
+    db = mongo['appdb']
     collection = db["host_results"]
     collection.insert_one({
         "system_id": 1,
