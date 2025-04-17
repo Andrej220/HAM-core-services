@@ -13,11 +13,17 @@ data:
     users = json.loads(os.getenv("MONGO_USER", "[]"))
     pwds  = json.loads(os.getenv("MONGO_PASS", "[]"))
     dbs   = json.loads(os.getenv("MONGO_DB",   "[]"))
-
+    
+    print("DEBUG:", 
+      "MONGO_USER=", repr(os.getenv("MONGO_USER")),
+      "MONGO_PASS=", repr(os.getenv("MONGO_PASS")),
+      "MONGO_DB=",   repr(os.getenv("MONGO_DB")))
+    
     user = users[0] if users else "root"
     pwd  = pwds[0]  if pwds  else ""
     db   = dbs[0]   if dbs   else "admin"
-
+    print("DEBUG:", "user=", repr(user), "pwd=", repr(pwd), "db=", repr(db))
+    
     mongo = MongoClient(f"mongodb://{user}:{pwd}@mongodb:27017/{db}")
     collection = mongo[db]["host_results"]
     collection.insert_one({
