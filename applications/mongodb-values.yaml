@@ -1,12 +1,5 @@
 auth:
-  enabled: true
-  rootPassword: rootpassword
-  usernames: 
-    - appuser
-  passwords: 
-    - apppassword
-  databases: 
-    - appdb
+  existingSecret: mongodb
 fullnameOverride: mongodb
 nameOverride: mongodb
 persistence:
