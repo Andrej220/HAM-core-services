@@ -9,9 +9,9 @@ data:
     import os, json
     from pymongo import MongoClient
 
-    users = json.loads(os.getenv("MONGO_USER_JSON", "[]"))
-    pwds  = json.loads(os.getenv("MONGO_PASS_JSON", "[]"))
-    dbs   = json.loads(os.getenv("MONGO_DB_JSON",   "[]"))
+    users = json.loads(os.getenv("MONGO_USER", "[]"))
+    pwds  = json.loads(os.getenv("MONGO_PASS", "[]"))
+    dbs   = json.loads(os.getenv("MONGO_DB",   "[]"))
 
     user = users[0] if users else "root"
     pwd  = pwds[0]  if pwds  else ""
