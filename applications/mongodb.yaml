@@ -1,4 +1,17 @@
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb
+  namespace: database-test
+stringData:
+  mongodb-root-password: password
+  mongodb-usernames:  '["appuser"]'
+  mongodb-passwords:  '["apppassword"]'
+  mongodb-databases:  '["appdb"]'
+type: Opaque
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
