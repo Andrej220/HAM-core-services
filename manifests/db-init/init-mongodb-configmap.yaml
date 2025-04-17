@@ -17,8 +17,7 @@ data:
     user = users[0] if users else "root"
     pwd  = pwds[0]  if pwds  else ""
     db   = dbs[0]   if dbs   else "admin"
-    print(user, pwd, db)
-    # Connect and insert
+
     mongo = MongoClient(f"mongodb://{user}:{pwd}@mongodb:27017/{db}")
     collection = mongo[db]["host_results"]
     collection.insert_one({
