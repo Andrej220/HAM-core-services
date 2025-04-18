@@ -5,14 +5,14 @@ auth:
   usernameKey: mongodb-usernames
   passwordKey: mongodb-passwords
   databaseKey: mongodb-databases
-  #enabled: true
-  #usernames: 
-  #  - "appuser"
-  #passwords: 
-  #  - "apppassword"
-  #databases: 
-  #  - "appdb"
-  #forcePassword: true
+  enabled: true
+  usernames: 
+    - "appuser"
+  passwords: 
+    - "apppassword"
+  databases: 
+    - "appdb"
+  forcePassword: true
 fullnameOverride: mongodb
 nameOverride: mongodb
 persistence:
