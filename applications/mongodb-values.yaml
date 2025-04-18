@@ -1,9 +1,12 @@
 auth:
   enabled: true
-  rootPassword: password
-  usernames: ["appuser"]
-  passwords: ["apppassword"]
-  databases: ["appdb"]
+  usernames: 
+    - "appuser"
+  passwords: 
+    - "apppassword"
+  databases: 
+    - "appdb"
+  forcePassword: true
 fullnameOverride: mongodb
 nameOverride: mongodb
 persistence:
