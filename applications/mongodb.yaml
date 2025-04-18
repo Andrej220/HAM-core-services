@@ -26,8 +26,23 @@ spec:
     chart: mongodb
     targetRevision: 16.4.12
     helm:
-      valueFiles:
-        - https://raw.githubusercontent.com/Andrej220/HAM-core-services/main/applications/mongodb-values.yaml
+      #valueFiles:
+      #  - https://raw.githubusercontent.com/Andrej220/HAM-core-services/main/applications/mongodb-values.yaml
+      values: |
+        auth:
+          enabled: true
+          forcePassword: true
+          rootPassword: "password"
+          usernames: ["appuser"]
+          passwords: ["apppassword"]
+          databases: ["appdb"]
+        fullnameOverride: mongodb
+        nameOverride: mongodb
+        persistence:
+          enabled: true
+          existingClaim: mongodb-data
+        nodeSelector:
+          kubernetes.io/hostname: ds-node1     
   destination:
     server: https://kubernetes.default.svc
     namespace: database-test
