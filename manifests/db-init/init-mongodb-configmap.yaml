@@ -5,30 +5,36 @@ metadata:
   namespace: database-test
 data:
   init.py: |
+        import os, json
+        from datetime import datetime
+        from pymongo import MongoClient
 
-    import os, json
-    from pymongo import MongoClient
-    from datetime import datetime
-    
-    print("DEBUG:", 
-      "MONGO_USER=", repr(os.getenv("MONGO_USER")),
-      "MONGO_PASS=", repr(os.getenv("MONGO_PASS")),
-      "MONGO_DB=",   repr(os.getenv("MONGO_DB")))
+        def load_list(envkey):
+            raw = os.getenv(envkey, "").strip()
+            if not raw:
+                return []
+            if raw.startswith("[") and raw.endswith("]"):
+                try:
+                    return json.loads(raw)
+                except json.JSONDecodeError:
+                    print(f"Warning: malformed JSON in {envkey}={raw!r}, treating as flat string")
+            return [raw]
 
-    users = json.loads(os.getenv("MONGO_USER", "[]"))
-    pwds  = json.loads(os.getenv("MONGO_PASS", "[]"))
-    dbs   = json.loads(os.getenv("MONGO_DB",   "[]"))
-    
-    
-    user = users[0] if users else "root"
-    pwd  = pwds[0]  if pwds  else ""
-    db   = dbs[0]   if dbs   else "admin"
-    print("DEBUG:", "user=", repr(user), "pwd=", repr(pwd), "db=", repr(db))
+        users = load_list("MONGO_USER")
+        pwds  = load_list("MONGO_PASS")
+        dbs   = load_list("MONGO_DB")
 
-    mongo = MongoClient(f"mongodb://{user}:{pwd}@mongodb:27017/{db}")
-    collection = mongo[db]["host_results"]
-    collection.insert_one({
-        "system_id": 1,
-        "executed_at": datetime.utcnow(),
-        "result": { "id": user, "fields": [] }
-    })
+        user = users[0] if users else "root"
+        pwd  = pwds[0]  if pwds  else ""
+        db   = dbs[0]   if dbs   else "admin"
+
+        print("DEBUG:", user, pwd, db)
+
+        # now connect & init
+        mongo = MongoClient(f"mongodb://{user}:{pwd}@mongodb:27017/{db}")
+        collection = mongo[db]["host_results"]
+        collection.insert_one({
+            "system_id": 1,
+            "executed_at": datetime.utcnow(),
+            "result": { "id": user, "fields": [] }
+        })
