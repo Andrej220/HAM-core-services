@@ -1,12 +1,18 @@
 auth:
-  enabled: true
-  usernames: 
-    - "appuser"
-  passwords: 
-    - "apppassword"
-  databases: 
-    - "appdb"
-  forcePassword: true
+  existingSecret: mongodb
+  existingSecretKey: mongodb-root-password
+  rootPasswordKey: mongodb-root-password
+  usernameKey: mongodb-usernames
+  passwordKey: mongodb-passwords
+  databaseKey: mongodb-databases
+  #enabled: true
+  #usernames: 
+  #  - "appuser"
+  #passwords: 
+  #  - "apppassword"
+  #databases: 
+  #  - "appdb"
+  #forcePassword: true
 fullnameOverride: mongodb
 nameOverride: mongodb
 persistence:
