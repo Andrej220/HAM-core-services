@@ -25,30 +25,6 @@ spec:
     chart: postgresql
     targetRevision: 15.5.8
     helm:
-      parameters:
-          - name: auth.postgresPassword
-            valueFrom:
-              secretKeyRef:
-                name: app-credentials
-                key: postgres-password
-          - name: auth.password
-            valueFrom:
-              secretKeyRef:
-                name: app-credentials
-                key: postgresUserPassword
-          - name: auth.username
-            valueFrom:
-              secretKeyRef:
-                name: app-credentials
-                key: postgresUsername
-      values: |
-          auth:
-            enabled: true
-            postgresPassword: ""
-            postgresqlDatabase: "appdb"
-            username: ""  
-            password: ""
-            forcePassword: true  
       valueFiles:
         - https://raw.githubusercontent.com/Andrej220/HAM-core-services/main/applications/postgresql-values.yaml
   destination:
