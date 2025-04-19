@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql
+  namespace: database-test
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+type: Opaque
+stringData:  
+   postgres-password: "password" 
+   password: "password"
+   username: "appuser"
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
