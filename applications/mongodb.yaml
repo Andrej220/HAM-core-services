@@ -25,6 +25,9 @@ spec:
       #valueFiles:
       #  - https://raw.githubusercontent.com/Andrej220/HAM-core-services/main/applications/mongodb-values.yaml
       values: |
+        extraEnvVars:
+            - name: GLIBC_TUNABLES
+              value: glibc.pthread.rseq=0
         auth:
           enabled: true
           usernames: ["appuser"]
