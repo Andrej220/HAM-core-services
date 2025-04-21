@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-data
-  namespace: database-test
+  namespace: database
   labels:
     app: postgres
     chart: postgresql-15.5.8

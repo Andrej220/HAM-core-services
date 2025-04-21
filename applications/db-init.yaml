@@ -16,7 +16,7 @@ spec:
     path: manifests/db-init
   destination:
     server: https://kubernetes.default.svc
-    namespace: database-test
+    namespace: database
   syncPolicy:
     automated:
       selfHeal: true

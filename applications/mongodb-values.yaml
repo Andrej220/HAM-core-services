@@ -17,6 +17,6 @@ fullnameOverride: mongodb
 nameOverride: mongodb
 persistence:
   enabled: true
-  existingClaim: mongodb-data
+  existingClaim: mongodb-datac
 nodeSelector:
   kubernetes.io/hostname: ds-node1

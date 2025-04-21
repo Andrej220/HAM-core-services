@@ -13,7 +13,7 @@ spec:
     path: manifests/storage
   destination:
     server: https://kubernetes.default.svc
-    namespace: database-test
+    namespace: database
   syncPolicy:
     automated:
       selfHeal: true
