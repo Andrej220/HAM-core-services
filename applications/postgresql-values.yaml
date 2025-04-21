@@ -1,6 +1,5 @@
 auth:
   enabled: true
-  existingSecret: postgresql
   database: "appdb"
   username: "appuser"  
   password: ""  
