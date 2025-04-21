@@ -22,7 +22,7 @@ spec:
         env:
         - name: MONGO_USER
           valueFrom:
-            secretKeyRef:
+            configMapKeyRef:
               name: mongodb
               key: mongodb-usernames
         - name: MONGO_PASS
@@ -32,7 +32,7 @@ spec:
               key: mongodb-passwords
         - name: MONGO_DB
           valueFrom:
-            secretKeyRef:
+            configMapKeyRef:
               name: mongodb
               key: mongodb-databases
         volumeMounts:
