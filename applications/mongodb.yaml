@@ -27,11 +27,9 @@ spec:
       values: |
         auth:
           enabled: true
-          forcePassword: true
-          rootPassword: "password"
           usernames: ["appuser"]
-          passwords: ["apppassword"]
           databases: ["appdb"]
+          passwords: []
         fullnameOverride: mongodb
         nameOverride: mongodb
         persistence:
