@@ -1,0 +1,57 @@
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: ds-node1
+  namespace: longhorn-system
+spec:
+  disks:
+    hdd-1:
+      path: /mnt/longhorn
+      tags: ["hdd", "raid10"]
+
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: docserver
+  namespace: longhorn-system
+spec:
+  disks:
+    hdd-2:
+      path: /mnt/longhorn
+      tags: ["hdd", "raid0"]
+
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: ds-node3
+  namespace: longhorn-system
+spec:
+  disks:
+    hdd-1:
+      path: /mnt/longhorn
+      tags: ["hdd", "raid0"]
+
+---
+# StorageClass for raid10 (ds-node1)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: longhorn-r10
+provisioner: driver.longhorn.io
+parameters:
+  diskSelector: "hdd,raid10"
+  numberOfReplicas: "2"
+
+---
+# StorageClass for raid0 (docserver, ds-node3)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: longhorn-r0
+provisioner: driver.longhorn.io
+parameters:
+  diskSelector: "hdd,raid0"
+  numberOfReplicas: "3"

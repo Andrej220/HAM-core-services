@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+  sources:
+    - chart: longhorn
+      repoURL: https://charts.longhorn.io/
+      targetRevision: v1.8.1  
+      helm:
+        values: |
+          defaultSettings:
+            defaultDataPath: /mnt/longhorn
+            defaultReplicaCount: 2
+            storageOverProvisioningPercentage: 150
+          persistence:
+            enabled: true
+            defaultClass: false
+          longhornManager:
+            nodeSelector:
+              longhorn: enabled
+            tolerations:
+              - key: "node-role.kubernetes.io/control-plane"
+                operator: "Exists"
+                effect: "NoSchedule"
+          preUpgradeChecker:
+            jobEnabled: false
+    - repoURL: https://github.com/Andrej220/HAM-core-services/blob/main/manifests/longhorn/longhorn-config.yaml
+      path: manifests
+      targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
