@@ -1,0 +1,11 @@
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: docserver
+  namespace: longhorn-system
+spec:
+  disks:
+    hdd-2:
+      path: /mnt/longhorn
+      tags: ["hdd", "raid0"]
