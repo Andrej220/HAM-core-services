@@ -1,0 +1,4 @@
+resources:
+  - headless-svc.yaml
+  - svc.yaml
+  - statefulset.yaml
