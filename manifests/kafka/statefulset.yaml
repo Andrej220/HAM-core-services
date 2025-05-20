@@ -37,7 +37,7 @@ spec:
               value: CONTROLLER
             - name: KAFKA_ADVERTISED_LISTENERS
               value: >-
-                PLAINTEXT://kafka-$(hostname).kafka-headless.kafka.svc.cluster.local:9092
+                PLAINTEXT://kafka-0.kafka-headless.kafka.svc.cluster.local:9092
           image: apache/kafka:4.0.0
           name: kafka
           ports:
