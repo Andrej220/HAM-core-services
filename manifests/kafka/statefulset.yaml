@@ -37,7 +37,7 @@ spec:
         - name: KAFKA_NODE_ID
           valueFrom:
             fieldRef:
-              fieldPath: metadata.labels['statefulset.kubernetes.io/pod-name'] 
+              fieldPath: metadata.name 
         ports:
         - containerPort: 9092
           name: broker
