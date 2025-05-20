@@ -22,16 +22,14 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: KAFKA_PROCESS_ROLES
-              value: broker,controller
-            - name: KAFKA_CONTROLLER_QUORUM_VOTERS
-              value: 0@kafka-0.kafka-headless.kafka.svc.cluster.local:9093,1@kafka-1.kafka-headless.kafka.svc.cluster.local:9093,2@kafka-2.kafka-headless.kafka.svc.cluster.local:9093
-            - name: KAFKA_LISTENERS
-              value: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-            - name: KAFKA_CONTROLLER_LISTENER_NAMES
-              value: CONTROLLER
-            - name: KAFKA_CLUSTER_ID
-              value: "5L6g3nShT-eMCtK--X86sw"
+            - name: KAFKA_NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKA_ADVERTISED_LISTENERS
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           image: apache/kafka:4.0.0
           name: kafka
           ports:
@@ -44,14 +42,20 @@ spec:
               name: volume-0
             - mountPath: /var/lib/kafka/logs1
               name: volume-1
+            - mountPath: /opt/kafka/config/kraft
+              name: kafka-config
           command:
             - /bin/sh
             - -c
             - |
               export KAFKA_BROKER_ID=${KAFKA_BROKER_ID##*-}
               export KAFKA_NODE_ID=$KAFKA_BROKER_ID
-              export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-${HOSTNAME}.kafka-headless.kafka.svc.cluster.local:9092
-              exec /opt/kafka/bin/kafka-server-start.sh 
+              export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-${KAFKA_BROKER_ID}.kafka-headless.kafka.svc.cluster.local:9092
+              exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties
+  volumes:
+    - name: kafka-config
+      configMap:
+        name: kafka-config
   volumeClaimTemplates:
     - metadata:
         name: volume-0
