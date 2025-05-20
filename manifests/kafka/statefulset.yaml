@@ -37,7 +37,7 @@ spec:
         - name: KAFKA_NODE_ID
           valueFrom:
             fieldRef:
-              fieldPath: metadata.name 
+              fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
         ports:
         - containerPort: 9092
           name: broker
