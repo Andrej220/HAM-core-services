@@ -8,4 +8,4 @@ spec:
   disks:
     hdd-1:
       path: /mnt/longhorn
-      tags: ["hdd", "raid10"]
+      tags: ["hdd", "raid0"]
