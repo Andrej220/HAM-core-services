@@ -14,16 +14,24 @@ spec:
   sources:
     - chart: longhorn
       repoURL: https://charts.longhorn.io/
-      targetRevision: v1.8.1  
+      targetRevision: v1.8.1
       helm:
         values: |
           defaultSettings:
             defaultDataPath: /mnt/longhorn
             defaultReplicaCount: 2
             storageOverProvisioningPercentage: 150
+            storageReservedPercentageForDefaultDisk: 25
+            concurrentReplicaRebuildPerNodeLimit: 2
+            allowVolumeExpansion: true
+            disableSchedulingOnCordonedNode: true
+            nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+            replicaSoftAntiAffinity: false
+
           persistence:
             enabled: true
             defaultClass: false
+
           longhornManager:
             nodeSelector:
               longhorn: enabled
@@ -31,8 +39,23 @@ spec:
               - key: "node-role.kubernetes.io/control-plane"
                 operator: "Exists"
                 effect: "NoSchedule"
-          preUpgradeChecker:
-            jobEnabled: false
+            resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "500m"
+                memory: "256Mi"
+
+          longhornUI:
+            resources:
+              requests:
+                cpu: "50m"
+                memory: "64Mi"
+              limits:
+                cpu: "200m"
+                memory: "128Mi"
+
     - repoURL: https://github.com/Andrej220/HAM-core-services/blob/main/manifests/longhorn/longhorn-config.yaml
       path: manifests
       targetRevision: main
