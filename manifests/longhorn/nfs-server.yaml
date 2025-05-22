@@ -33,6 +33,8 @@ spec:
         env:
         - name: SHARED_DIRECTORY
           value: /export
+        - name: SHARED_DIRECTORY_PERMISSIONS
+          value: "0777"
         ports:
         - name: nfs
           containerPort: 2049
