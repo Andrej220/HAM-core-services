@@ -7,5 +7,5 @@ metadata:
 spec:
   disks:
     hdd-1:
-      path: /mnt/longhorn
+      path: /mnt
       tags: ["hdd", "raid10"]
