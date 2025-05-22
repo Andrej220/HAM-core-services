@@ -6,5 +6,4 @@ metadata:
 spec:
   backupTargetURL: "nfs://nfs-svc.longhorn-system.svc.cluster.local:/export"
   backupTargetOptions:
-    nfsOptions: vers=3
   pollInterval: 5m
