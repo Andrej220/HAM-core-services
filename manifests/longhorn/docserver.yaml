@@ -5,7 +5,10 @@ metadata:
   name: docserver
   namespace: longhorn-system
 spec:
+  allowScheduling: true
   disks:
     hdd-2:
-      path: /mnt/longhorn
+      path: /var/lib/longhorn
+      diskType: filesystem
+      allowScheduling: true
       tags: ["hdd", "raid0"]
