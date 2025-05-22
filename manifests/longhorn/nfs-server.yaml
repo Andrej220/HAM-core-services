@@ -59,5 +59,8 @@ spec:
           mountPath: /export
       volumes:
       - name: export-volume
-        persistentVolumeClaim:
-          claimName: nfs-backup-pvc
+        hostPath:
+           path: /mnt/nfs-backup
+           type: DirectoryOrCreate
+        #persistentVolumeClaim:
+        #  claimName: nfs-backup-pvc
