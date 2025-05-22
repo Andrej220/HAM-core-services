@@ -1,11 +1,11 @@
----
-apiVersion: longhorn.io/v1beta2
-kind: Node
-metadata:
-  name: ds-node1
-  namespace: longhorn-system
-spec:
-  disks:
-    hdd-1:
-      path: /mnt
-      tags: ["hdd", "raid10"]
+#---
+#apiVersion: longhorn.io/v1beta2
+#kind: Node
+#metadata:
+#  name: ds-node1
+#  namespace: longhorn-system
+#spec:
+#  disks:
+#    hdd-1:
+#      path: /mnt
+#      tags: ["hdd", "raid10"]
