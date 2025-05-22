@@ -7,4 +7,4 @@ metadata:
 provisioner: driver.longhorn.io
 parameters:
   diskSelector: "hdd,raid10"
-  numberOfReplicas: "2"
+  numberOfReplicas: "1"
