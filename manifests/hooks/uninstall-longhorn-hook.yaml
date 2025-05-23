@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: longhorn-predelete-hook
+  namespace: longhorn-system
+  annotations:
+    "argocd.argoproj.io/hook": PreDelete
+    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: cleanup
+        image: bitnami/kubectl:latest
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          echo "Deleting Longhorn volumes and CRs..."
+          kubectl -n longhorn-system delete volumes --all --ignore-not-found
+          kubectl -n longhorn-system delete replicas --all --ignore-not-found
+          kubectl -n longhorn-system delete nodes --all --ignore-not-found
+          kubectl -n longhorn-system delete engineimages --all --ignore-not-found
+          kubectl -n longhorn-system delete instance-managers --all --ignore-not-found
+          kubectl -n longhorn-system delete backingimages --all --ignore-not-found
+          kubectl -n longhorn-system delete backingimagemanagers --all --ignore-not-found
+          kubectl -n longhorn-system delete settings --all --ignore-not-found
+          echo "Deleting namespace..."
+          kubectl delete ns longhorn-system --ignore-not-found
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      restartPolicy: Never
+  backoffLimit: 1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: longhorn-postsync-validation
+  namespace: longhorn-system
+  annotations:
+    "argocd.argoproj.io/hook": PostSync
+    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: check
+        image: bitnami/kubectl:latest
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          echo "Verifying Longhorn installation..."
+          kubectl -n longhorn-system get pods
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      restartPolicy: Never
+  backoffLimit: 1
