@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-server
+  namespace: longhorn-system
+  labels:
+    app: nfs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfs-server
+  template:
+    metadata:
+      labels:
+        app: nfs-server
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                - ds-node2
+      containers:
+      - name: nfs-server
+        image: itsthenetwork/nfs-server-alpine:latest
+        securityContext:
+          privileged: true
+        env:
+        - name: SHARED_DIRECTORY
+          value: /export
+        - name: SHARED_DIRECTORY_PERMISSIONS
+          value: "0777"
+        ports:
+        - name: nfs
+          containerPort: 2049
+          protocol: TCP
+        - name: nfs-udp
+          containerPort: 2049
+          protocol: UDP
+        - name: mountd
+          containerPort: 20048
+          protocol: TCP
+        - name: mountd-udp
+          containerPort: 20048
+          protocol: UDP
+        - name: rpcbind-tcp
+          containerPort: 111
+          protocol: TCP
+        - name: rpcbind-udp
+          containerPort: 111
+          protocol: UDP
+        volumeMounts:
+        - name: export-volume
+          mountPath: /export
+      volumes:
+      - name: export-volume
+        hostPath:
+           path: /mnt/nfs-backup
+           type: DirectoryOrCreate
+        #persistentVolumeClaim:
+        #  claimName: nfs-backup-pvc

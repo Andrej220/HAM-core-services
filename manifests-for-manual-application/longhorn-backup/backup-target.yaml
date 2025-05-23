@@ -1,0 +1,10 @@
+apiVersion: longhorn.io/v1beta1
+kind: BackupTarget
+metadata:
+  name: default-backup-target
+  namespace: longhorn-system
+spec:
+  backupTargetURL: "nfs://nfs-svc.longhorn-system.svc.cluster.local:/"
+  backupTargetOptions:
+      nfsOptions: nolock
+  pollInterval: 5m

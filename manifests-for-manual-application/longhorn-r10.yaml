@@ -1,0 +1,10 @@
+#---
+## StorageClass for raid10 (ds-node1)
+#apiVersion: storage.k8s.io/v1
+#kind: StorageClass
+#metadata:
+#  name: longhorn-r10
+#provisioner: driver.longhorn.io
+#parameters:
+#  diskSelector: "hdd,raid10"
+#  numberOfReplicas: "1"
