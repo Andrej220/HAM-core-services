@@ -39,6 +39,22 @@ spec:
               - key: "node-role.kubernetes.io/control-plane"
                 operator: "Exists"
                 effect: "NoSchedule"
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchExpressions:
+                        - key: app
+                          operator: In
+                          values:
+                            - longhorn-manager
+                    topologyKey: kubernetes.io/hostname
+            readinessProbe:
+              httpGet:
+                path: /v1/health
+                port: 9500
+              initialDelaySeconds: 5
+              periodSeconds: 10
             resources:
               requests:
                 cpu: "100m"
@@ -46,6 +62,10 @@ spec:
               limits:
                 cpu: "500m"
                 memory: "256Mi"
+
+          serviceAccount:
+            create: true
+            name: longhorn-service-account
 
           longhornUI:
             resources:
@@ -56,9 +76,9 @@ spec:
                 cpu: "200m"
                 memory: "128Mi"
 
-    - repoURL: https://github.com/Andrej220/HAM-core-services/blob/main/manifests/longhorn/longhorn-config.yaml
-      path: manifests
-      targetRevision: main
+    #- repoURL: https://github.com/Andrej220/HAM-core-services
+    #  path: manifests/longhorn
+    #  targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
