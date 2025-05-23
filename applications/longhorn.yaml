@@ -17,68 +17,79 @@ spec:
       targetRevision: v1.8.1
       helm:
         values: |
-          defaultSettings:
-            defaultDataPath: /mnt/longhorn
-            defaultReplicaCount: 2
-            storageOverProvisioningPercentage: 150
-            storageReservedPercentageForDefaultDisk: 25
-            concurrentReplicaRebuildPerNodeLimit: 2
-            allowVolumeExpansion: true
-            disableSchedulingOnCordonedNode: true
-            nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-            replicaSoftAntiAffinity: false
-
-          persistence:
-            enabled: true
-            defaultClass: false
-
-          longhornManager:
-            nodeSelector:
-              longhorn: enabled
-            tolerations:
-              - key: "node-role.kubernetes.io/control-plane"
-                operator: "Exists"
-                effect: "NoSchedule"
-            affinity:
-              podAntiAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  - labelSelector:
-                      matchExpressions:
-                        - key: app
-                          operator: In
-                          values:
-                            - longhorn-manager
-                    topologyKey: kubernetes.io/hostname
-            readinessProbe:
-              httpGet:
-                path: /v1/health
-                port: 9500
-              initialDelaySeconds: 5
-              periodSeconds: 10
-            resources:
-              requests:
-                cpu: "100m"
-                memory: "128Mi"
-              limits:
-                cpu: "500m"
-                memory: "256Mi"
-
-          serviceAccount:
-            create: true
-            name: longhorn-service-account
-
-          longhornUI:
-            resources:
-              requests:
-                cpu: "50m"
-                memory: "64Mi"
-              limits:
-                cpu: "200m"
-                memory: "128Mi"
-
-    #- repoURL: https://github.com/Andrej220/HAM-core-services
-    #  path: manifests/longhorn
-    #  targetRevision: main
+           defaultSettings:
+             defaultDataPath: /mnt/longhorn
+             defaultReplicaCount: 2
+             storageOverProvisioningPercentage: 150
+             storageReservedPercentageForDefaultDisk: 25
+             concurrentReplicaRebuildPerNodeLimit: 2
+             allowVolumeExpansion: true
+             disableSchedulingOnCordonedNode: true
+             nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+             replicaSoftAntiAffinity: false
+             logLevel: Info
+           
+           persistence:
+             enabled: true
+             defaultClass: false
+           
+           serviceAccount:
+             create: true
+             name: longhorn-service-account
+           
+           longhornManager:
+             nodeSelector:
+               longhorn: enabled
+             tolerations:
+               - key: "node-role.kubernetes.io/control-plane"
+                 operator: "Exists"
+                 effect: "NoSchedule"
+             priorityClassName: longhorn-critical
+             affinity:
+               podAntiAffinity:
+                 requiredDuringSchedulingIgnoredDuringExecution:
+                   - labelSelector:
+                       matchExpressions:
+                         - key: app
+                           operator: In
+                           values:
+                             - longhorn-manager
+                     topologyKey: kubernetes.io/hostname
+             readinessProbe:
+               httpGet:
+                 path: /v1/health
+                 port: 9500
+               initialDelaySeconds: 5
+               periodSeconds: 10
+             resources:
+               requests:
+                 cpu: "100m"
+                 memory: "128Mi"
+               limits:
+                 cpu: "500m"
+                 memory: "256Mi"
+           
+           longhornUI:
+             resources:
+               requests:
+                 cpu: "50m"
+                 memory: "64Mi"
+               limits:
+                 cpu: "200m"
+                 memory: "128Mi"
+           
+           longhornDriverDeployer:
+             resources:
+               requests:
+                 cpu: "50m"
+                 memory: "64Mi"
+               limits:
+                 cpu: "200m"
+                 memory: "128Mi"
+    - repoURL: https://github.com/Andrej220/HAM-core-services
+      path: manifests/hooks
+      targetRevision: main
+      ref: hooks
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
