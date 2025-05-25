@@ -22,7 +22,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: raid10-storage
   local:
-    path: /mnt/raid10/postgresql
+    path: /mnt/postgresql
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -48,7 +48,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: raid10-storage
   local:
-    path: /mnt/raid10/mongodb
+    path: /mnt/mongodb
   nodeAffinity:
     required:
       nodeSelectorTerms:
