@@ -55,14 +55,11 @@ spec:
               mkdir -p /var/lib/kafka/data/kafka-logs
               chown -R 1000:1000 /var/lib/kafka/data
               chmod -R 750 /var/lib/kafka/data
-              if [ ! -f /var/lib/kafka/data/kafka-log/meta.properties ]; then
-                echo "Formatting Kafka storage"
-                /opt/kafka/bin/kafka-storage.sh format \
+              echo "Formatting Kafka storage"
+              /opt/kafka/bin/kafka-storage.sh format \
                   --config /config/server.properties \
-                  --cluster-id ${CLUSTER_ID}
-              else
-                echo "Storage already formatted"
-              fi
+                  --cluster-id ${CLUSTER_ID} \
+                  --ignore-formatted
           securityContext:
              runAsUser: 0
           env:
