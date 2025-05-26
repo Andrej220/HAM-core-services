@@ -55,7 +55,7 @@ spec:
             - -c
             - |
               rm -rf /var/lib/kafka/data/lost+found
-              mkdir -p /var/lib/kafka/data/kafka-logs
+              mkdir -p /var/lib/kafka/data
               chown -R 1000:1000 /var/lib/kafka/data
               chmod -R 750 /var/lib/kafka/data
               echo "Formatting Kafka storage"
