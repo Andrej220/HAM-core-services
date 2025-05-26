@@ -21,8 +21,10 @@ spec:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
-                matchLabels:
-                  app: kafka
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: [kafka]
               topologyKey: kubernetes.io/hostname
       initContainers:
         - name: init-config
