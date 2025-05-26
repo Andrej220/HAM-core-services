@@ -68,7 +68,7 @@ spec:
             - name: CLUSTER_ID
               valueFrom:
                 configMapKeyRef:
-                  name: kafka-cluster-id
+                  name: kafka-config
                   key: clusterId
           volumeMounts:
             - name: data
