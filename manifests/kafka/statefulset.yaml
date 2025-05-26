@@ -1,77 +1,133 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  labels:
-    app.kubernetes.io/instance: kafka
   name: kafka
   namespace: kafka
+  labels:
+    app: kafka
 spec:
   replicas: 3
+  serviceName: kafka-headless
   selector:
     matchLabels:
       app: kafka
-  serviceName: kafka-headless
   template:
     metadata:
       labels:
         app: kafka
     spec:
-      containers:
-        - env:
-            - name: KAFKA_BROKER_ID
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: kafka
+              topologyKey: kubernetes.io/hostname
+      initContainers:
+        - name: init-config
+          image: busybox:1.35
+          command: ['sh', '-c']
+          args:
+            - |
+              NODE_ID=$(echo "${HOSTNAME##*-}")
+              sed -e "s/\${NODE_ID}/${NODE_ID}/g" \
+                  -e "s/\${POD_NAME}/${HOSTNAME}/g" \
+                  /tmp/server.properties > /config/server.properties
+          env:
+            - name: HOSTNAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: KAFKA_NODE_ID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: KAFKA_ADVERTISED_LISTENERS
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
+          volumeMounts:
+            - name: config-template
+              mountPath: /tmp
+            - name: config
+              mountPath: /config
+
+        # This container formats Kafka storage ONCE before pod startup.
+        - name: format-storage
           image: apache/kafka:4.0.0
-          name: kafka
+          command:
+            - sh
+            - -c
+            - |
+              rm -rf /var/lib/kafka/data/lost+found
+              chown -R 1000:1000 /var/lib/kafka/data
+              chmod -R 750 /var/lib/kafka/data
+              if [ ! -f /var/lib/kafka/data/meta.properties ]; then
+                echo "Formatting Kafka storage"
+                /opt/kafka/bin/kafka-storage.sh format \
+                  --config /config/server.properties \
+                  --cluster-id ${CLUSTER_ID}
+              else
+                echo "Storage already formatted"
+              fi
+          securityContext:
+             runAsUser: 0
+          env:
+            - name: CLUSTER_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-cluster-id
+                  key: clusterId
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/kafka/data
+            - name: config
+              mountPath: /config
+
+      containers:
+        - name: kafka
+          image: apache/kafka:4.0.0
+          command: ["/opt/kafka/bin/kafka-server-start.sh"]
+          args: ["/config/server.properties"]
           ports:
             - containerPort: 9092
               name: broker
             - containerPort: 9093
               name: controller
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2Gi"
+            limits:
+              cpu: "1000m"
+              memory: "4Gi"
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 5
           volumeMounts:
-            - mountPath: /var/lib/kafka/logs0
-              name: volume-0
-            - mountPath: /var/lib/kafka/logs1
-              name: volume-1
-            - mountPath: /opt/kafka/config/kraft
-              name: kafka-config
-          command:
-            - /bin/sh
-            - -c
-            - |
-              export KAFKA_BROKER_ID=${KAFKA_BROKER_ID##*-}
-              export KAFKA_NODE_ID=$KAFKA_BROKER_ID
-              export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-${KAFKA_BROKER_ID}.kafka-headless.kafka.svc.cluster.local:9092
-              exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties
-  volumes:
-    - name: kafka-config
-      configMap:
-        name: kafka-config
+            - name: data
+              mountPath: /var/lib/kafka/data/kafka-logs
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config-template
+          configMap:
+            name: kafka-config
+        - name: config
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
-        name: volume-0
+        name: data
       spec:
         accessModes:
           - ReadWriteOnce
-        resources:
-          requests:
-            storage: 10Gi
         storageClassName: longhorn-r0
-    - metadata:
-        name: volume-1
-      spec:
-        accessModes:
-          - ReadWriteOnce
         resources:
           requests:
             storage: 10Gi
-        storageClassName: longhorn-r10
