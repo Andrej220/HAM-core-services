@@ -14,7 +14,7 @@ data:
     listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
     inter.broker.listener.name=PLAINTEXT
     controller.listener.names=CONTROLLER
-    log.dirs=/var/lib/kafka/data/kafka-logs
+    log.dirs=/var/lib/kafka/data
     num.partitions=1
     default.replication.factor=3
     min.insync.replicas=2
