@@ -48,6 +48,7 @@ spec:
               mountPath: /tmp
             - name: config
               mountPath: /config
+              readOnly: true
 
         - name: format-storage
           image: apache/kafka:4.0.0
@@ -124,8 +125,9 @@ spec:
         - name: config-template
           configMap:
             name: kafka-config
-       # - name: config
-       #   emptyDir: {}
+        - name: config
+          configMap:
+            name: kafka-config            
   volumeClaimTemplates:
     - metadata:
         name: data
