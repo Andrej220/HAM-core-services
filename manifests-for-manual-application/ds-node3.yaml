@@ -10,4 +10,4 @@ spec:
     hdd-1:
       path: /mnt/longhorn
       allowScheduling: true
-      tags: ["hdd", "raid0"]
+      tags: ["hdd","raid0"]

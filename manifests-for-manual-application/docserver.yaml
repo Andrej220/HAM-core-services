@@ -11,4 +11,4 @@ spec:
       path: /var/lib/longhorn
       diskType: filesystem
       allowScheduling: true
-      tags: ["hdd", "raid0"]
+      tags: ["hdd","raid0"]
