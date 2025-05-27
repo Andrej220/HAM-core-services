@@ -5,7 +5,9 @@ metadata:
   name: ds-node3
   namespace: longhorn-system
 spec:
+  allowScheduling: true
   disks:
     hdd-1:
       path: /mnt/longhorn
+      allowScheduling: true
       tags: ["hdd", "raid0"]
