@@ -19,7 +19,7 @@ spec:
         skipCrds: false
         values: |
            defaultSettings:
-             defaultDataPath: /mnt/longhorn
+             defaultDataPath: /mnt/default
              defaultReplicaCount: 2
              storageOverProvisioningPercentage: 150
              storageReservedPercentageForDefaultDisk: 25
