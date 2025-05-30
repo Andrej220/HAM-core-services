@@ -1,6 +1,6 @@
 .PHONY: all longhorn-disks backup-targetsclean-all clean-volumes clean-longhorn-disks clean-backup-targets
 
-all: longhorn-disks backup-targets
+install-all: longhorn-disks backup-targets
 
 clean-all: clean-backup-targets clean-volumes clean-longhorn-disks
 
