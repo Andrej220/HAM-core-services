@@ -65,6 +65,19 @@ spec:
                   --config /config/server.properties \
                   --cluster-id ${CLUSTER_ID} \
                   --ignore-formatted
+          securityContext:
+             runAsUser: 1000
+          env:
+            - name: CLUSTER_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: kafka-config
+                  key: clusterId
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/kafka/data
+            - name: config
+              mountPath: /config
         - name: create-topic
           image: apache/kafka:4.0.0
           command: ["/bin/sh", "-c"]
@@ -84,21 +97,7 @@ spec:
                 --topic remote-requests \
                 --partitions 3 \
                 --replication-factor 2 \
-                --config retention.ms=604800000  # 7 days       
-          securityContext:
-             runAsUser: 1000
-          env:
-            - name: CLUSTER_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: kafka-config
-                  key: clusterId
-          volumeMounts:
-            - name: data
-              mountPath: /var/lib/kafka/data
-            - name: config
-              mountPath: /config
-
+                --config retention.ms=604800000  # 7 days  
       containers:
         - name: kafka
           image: apache/kafka:4.0.0
