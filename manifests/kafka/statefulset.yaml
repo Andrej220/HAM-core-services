@@ -167,5 +167,5 @@ spec:
               --create \
               --topic remote-requests \
               --partitions 3 \
-              --replication-factor 1 \
+              --replication-factor 2 \
               --config retention.ms=604800000  # 7 days  
