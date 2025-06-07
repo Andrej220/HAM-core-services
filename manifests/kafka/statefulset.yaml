@@ -78,26 +78,6 @@ spec:
               mountPath: /var/lib/kafka/data
             - name: config
               mountPath: /config
-        - name: create-topic
-          image: apache/kafka:4.0.0
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              echo "Waiting for Kafka brokers to be ready..."
-              until /opt/kafka/bin/kafka-broker-api-versions.sh \
-                --bootstrap-server kafka-0.kafka-headless.kafka.svc.cluster.local:9092 \
-                --version 2>/dev/null; do
-                sleep 5
-              done
-
-              echo "Creating topic 'remote-requests'..."
-              /opt/kafka/bin/kafka-topics.sh \
-                --bootstrap-server kafka-0.kafka-headless.kafka.svc.cluster.local:9092 \
-                --create \
-                --topic remote-requests \
-                --partitions 3 \
-                --replication-factor 2 \
-                --config retention.ms=604800000  # 7 days  
       containers:
         - name: kafka
           image: apache/kafka:4.0.0
@@ -158,3 +138,34 @@ spec:
         resources:
           requests:
             storage: 10Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-topic-creator
+  namespace: kafka
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: topic-creator
+        image: apache/kafka:4.0.0
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "Waiting for Kafka to be ready..."
+            until /opt/kafka/bin/kafka-topics.sh \
+              --bootstrap-server kafka.kafka.svc.cluster.local:9092 \
+              --list >/dev/null 2>&1; do
+              sleep 5
+            done
+            
+            echo "Creating topic..."
+            /opt/kafka/bin/kafka-topics.sh \
+              --bootstrap-server kafka.kafka.svc.cluster.local:9092 \
+              --create \
+              --topic remote-requests \
+              --partitions 3 \
+              --replication-factor 1 \
+              --config retention.ms=604800000  # 7 days  
