@@ -9,10 +9,10 @@ data:
     process.roles=broker,controller
     node.id=${NODE_ID}
     controller.quorum.voters=0@kafka-0.kafka-headless.kafka.svc.cluster.local:9093,1@kafka-1.kafka-headless.kafka.svc.cluster.local:9093,2@kafka-2.kafka-headless.kafka.svc.cluster.local:9093
-    listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+    listeners=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:19092,CONTROLLER://0.0.0.0:9093
     advertised.listeners=INTERNAL://${POD_NAME}.kafka-headless.kafka.svc.cluster.local:9092,EXTERNAL://hev095wvtq2.sn.mynetname.net:19092
-    listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-    inter.broker.listener.name=PLAINTEXT
+    listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+    inter.broker.listener.name=INTERNAL
     controller.listener.names=CONTROLLER
     log.dirs=/var/lib/kafka/data
     num.partitions=1
