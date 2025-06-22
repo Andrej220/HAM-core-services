@@ -10,7 +10,7 @@ data:
     node.id=${NODE_ID}
     controller.quorum.voters=0@kafka-0.kafka-headless.kafka.svc.cluster.local:9093,1@kafka-1.kafka-headless.kafka.svc.cluster.local:9093,2@kafka-2.kafka-headless.kafka.svc.cluster.local:9093
     listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-    advertised.listeners=PLAINTEXT://${POD_NAME}.kafka-headless.kafka.svc.cluster.local:9092
+    advertised.listeners=INTERNAL://${POD_NAME}.kafka-headless.kafka.svc.cluster.local:9092,EXTERNAL://hev095wvtq2.sn.mynetname.net:19092
     listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
     inter.broker.listener.name=PLAINTEXT
     controller.listener.names=CONTROLLER
@@ -20,3 +20,6 @@ data:
     min.insync.replicas=2
     offsets.topic.replication.factor=3
     transaction.state.log.replication.factor=3
+
+# advertised.listeners=PLAINTEXT://${POD_NAME}.kafka-headless.kafka.svc.cluster.local:9092
+# advertised.listeners=INTERNAL://kafka.kafka.svc.cluster.local:9092,EXTERNAL://hev095wvtq2.sn.mynetname.net:19092
